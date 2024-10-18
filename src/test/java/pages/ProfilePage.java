@@ -6,6 +6,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ProfilePage {
@@ -13,7 +14,10 @@ public class ProfilePage {
     private final SelenideElement verifyUserName = $("#userName-value");
     private final SelenideElement verifyBookInTable = $(".ReactTable");
     private final SelenideElement clickDeleteIcon = $("#delete-record-undefined");
-    private final SelenideElement confirmDeleteButton = $("#closeSmallModal-ok");
+    //private final SelenideElement confirmDeleteButton = $("#closeSmallModal-ok");
+    private final SelenideElement modalWindow = $(".modal-content");
+    private final SelenideElement modalWindowButtonOk = modalWindow.$("#closeSmallModal-ok");
+
 
     @Step("Открываем Профиль")
     public ProfilePage openProfilePage() {
@@ -37,7 +41,11 @@ public class ProfilePage {
     @Step("Удаляем книгу из профиля")
     public ProfilePage deleteBook() {
         clickDeleteIcon.click();
-        confirmDeleteButton.click();
+        modalWindow
+                .shouldBe(visible);
+        modalWindowButtonOk
+                .shouldBe(visible)
+                .click();
         return this;
     }
 
